@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAS 函数文档查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #searchInput {
+            width: 300px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        #categorySelect {
+            padding: 8px;
+            font-size: 16px;
+            min-width: 150px;
+        }
+        .function-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .function-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .function-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .function-desc {
+            color: #666;
+            margin-bottom: 8px;
+        }
+        .function-syntax {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .function-example {
+            color: #666;
+            font-family: monospace;
+            margin: 8px 0;
+        }
+        .function-category {
+            color: #2c3e50;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>SAS 函数文档查询工具</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="输入函数名称搜索...">
+        <select id="categorySelect">
+            <option value="">所有类别</option>
+            <option value="过程语句">过程语句</option>
+            <option value="高级统计过程">高级统计过程</option>
+            <option value="数学函数">数学函数</option>
+            <option value="统计函数">统计函数</option>
+            <option value="字符串函数">字符串函数</option>
+            <option value="日期函数">日期函数</option>
+            <option value="数组函数">数组函数</option>
+            <option value="格式化函数">格式化函数</option>
+            <option value="条件函数">条件函数</option>
+            <option value="随机数函数">随机数函数</option>
+            <option value="概率函数">概率函数</option>
+            <option value="数据处理函数">数据处理函数</option>
+            <option value="临床试验分析">临床试验分析</option>
+            <option value="生存分析">生存分析</option>
+            <option value="重复测量分析">重复测量分析</option>
+            <option value="临床试验函数">临床试验函数</option>
+            <option value="生物等效性分析">生物等效性分析</option>
+            <option value="安全性分析">安全性分析</option>
+            <option value="人口统计学分析">人口统计学分析</option>
+        </select>
+    </div>
+    <div id="functionList" class="function-list"></div>
+
+    <script src="js/functions.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
