@@ -518,7 +518,7 @@ run;`,
     },
     {
         name: "PROC GLIMMIX",
-        description: "用于拟合广义线性混合模型，可处理非正态分��的应量，支��效复数据适于分类、计数、有序分类等多种类型的结局变量。",
+        description: "用于拟合广义线性混合模型，可处理非正态分的应量，支效复数据适于分类、计数、有序分类等多种类型的结局变量。",
         syntax: `PROC GLIMMIX DATA=dataset <options>;
     CLASS variables;
     MODEL response = fixed-effects / DIST= LINK= <options>;
@@ -600,7 +600,7 @@ run;`,
     },
     {
         name: "PROC MULTTEST",
-        description: "用于多重比和多重检验的调整，特别适用于临床试验中的多个终点分析和基因表达数据分析。",
+        description: "用于多重比和多重检验的调整，特别适用��临床试验中的多个终点分析和基因表达数据分析。",
         syntax: `PROC MULTTEST DATA=dataset <options>;
     CLASS variables;
     TEST name(variables </options>);
@@ -1040,7 +1040,7 @@ run;`,
    - DIF: https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.3/lefunctionsref/p0wa6j0ez1sdd4n1qr3p0xapgv6t.htm
 
 相关主题：
-1. 纵向数据分析
+1. 纵向据分析
 2. 时间序列分析
 3. 变化值计算
 4. 趋势分析`
@@ -1147,7 +1147,7 @@ QUIT;`,
 1. 基本查询功能：
    - SELECT: 选择列
    - FROM: 指定表
-   - WHERE: 条件筛选
+   - WHERE: 条��筛选
    - GROUP BY: 分组
    - HAVING: 分组后筛选
    - ORDER BY: 排序
@@ -1763,7 +1763,7 @@ run;`,
     },
     {
         name: "PROC SORT",
-        description: "用于数据集排序，在临床试验数据处理中常用于按照受试者、访视、时间等变量对数据进行排��。",
+        description: "用于数据集排序，在临床试验数据处理中常用于按照受试者、访视、时间等变量对数据进行排。",
         syntax: `PROC SORT DATA=dataset <OUT=output-dataset> <NODUPKEY> <DUPOUT=duplicate-dataset>;
     BY <DESCENDING> variables;
     WHERE expression;
@@ -1925,7 +1925,7 @@ SQRT(number)`,
 1. 统计函数：
    - MEAN: 计算算术平均值
    - MEDIAN: 计算中位数
-   - STD: 计算标准差
+   - STD: ���算标准差
    - VAR: 计算方差
    - MIN/MAX: 计算最小值/最大值
 
@@ -2135,7 +2135,7 @@ RUN;`,
      * MLE: 最大似然估计
      * STAGEWISE: 分阶段
 
-2. 分析选项：
+2. 分选项：
    - BOUNDARYKEY=: 边界关键值
      * ALPHA: 显著性水平
      * BETA: II类错误
@@ -2500,7 +2500,7 @@ RUN;`,
    - 影响分析
    - 异常值检测
    - 杠杆点识别`,
-        example: `/* 示例1：基本M估计 */
+        example: `/* 例1：基本M估计 */
 proc robustreg data=clinical method=m;
     model response = treatment age weight / diagnostics;
     output out=out1 outlier=outlier 
@@ -2564,7 +2564,7 @@ RUN;`,
    
    - 统计量关键字：
      * N: 频数
-     * PCTN: 百��比
+     * PCTN: 百比
      * MEAN: 均值
      * STD: 标准差
      * MEDIAN: 中位数
@@ -2620,6 +2620,149 @@ run;`,
 2. 描述性统计
 3. 临床试验报表
 4. 数据汇总`
+    },
+    {
+        name: "PROC ICLIFETEST",
+        description: "用于区间删失数据的非参数生存分析，在临床试验中用于处理不能精确观察到事件发生时间的情况。",
+        syntax: `PROC ICLIFETEST DATA=dataset <options>;
+    TIME (left, right);
+    STRATA variables;
+    TEST variables;
+    FREQ variable;
+RUN;`,
+        details: `主要参数说明：
+
+1. 基本选项：
+   - DATA=: 输入数据集
+   - METHOD=: 估计方法
+     * TURNBULL: Turnbull算法（默认）
+     * ICM: 迭代凸最小化
+   - MAXITER=: 最大迭代次数
+   - ALPHA=: 显著性水平
+
+2. TIME语句：
+   - left: 区间左端点
+   - right: 区间右端点
+   特殊情况：
+   - (.,t]: 左删失
+   - [t,.): 右删失
+   - [t]: 精确观测
+
+3. 检验选项：
+   - TEST=: 组间比较方法
+     * LOGRANK: Log-rank检验
+     * WILCOXON: Wilcoxon检验
+   - TREND: 趋势检验
+   - DIFF=: 差异类型
+
+4. 输出选项：
+   - PLOTS=: 图形输出
+     * SURVIVAL: 生存曲线
+     * HAZARD: 风险函数
+     * CIF: 累积发生率
+   - OUTSURV=: 输出生存估计
+   - MAXTIME=: 最大观察时间`,
+        example: `/* 示例1：基本区间删失分析 */
+proc iclifetest data=interval_data;
+    time (ltime, rtime);
+    strata treatment;
+    freq count;
+run;
+
+/* 示例2：多组比较 */
+proc iclifetest data=clinical plots=survival(cl);
+    time (last_neg, first_pos);
+    strata treatment / test=all;
+    freq count;
+run;
+
+/* 示例3：带协变量的分析 */
+proc iclifetest data=study plots=(survival hazard);
+    time (left, right);
+    strata gender age_group;
+    test treatment;
+run;`,
+        category: "生存分析",
+        references: `参考资料：
+1. SAS官方文档：https://documentation.sas.com/doc/en/statug/15.2/statug_iclifetest_syntax.htm
+
+相关主题：
+1. 区间删失数据分析
+2. 生存分析
+3. 非参数方法
+4. 临床试验数据分析`
+    },
+    {
+        name: "PROC ICPHREG",
+        description: "用于区间删失数据的比例风险回归分析，是PROC PHREG的扩展版本，适用于事件发生时间只知道发生在某个时间区间内的情况。",
+        syntax: `PROC ICPHREG DATA=dataset <options>;
+    CLASS variables </options>;
+    MODEL (left, right) = covariates </options>;
+    BASELINE OUT=dataset COVARIATES=dataset </options>;
+    HAZARDRATIO variable </options>;
+RUN;`,
+        details: `主要参数说明：
+
+1. 基本选项：
+   - DATA=: 输入数据集
+   - BASELINE=: 基线风险函数估计
+   - METHOD=: 估计方法
+     * ICM: 迭代凸最小化（默认）
+     * TURNBULL: Turnbull算法
+   - NLOPTIONS: 非线性优化选项
+
+2. MODEL语句：
+   - (left, right): 区间端点
+   - 特殊情况：
+     * (., right]: 左删失
+     * [left, .): 右删失
+     * [time]: 精确观测
+   - 选项：
+     * OFFSET=: 偏移变量
+     * TIES=: 同时事件处理方法
+
+3. 诊断选项：
+   - INFLUENCE: 影响诊断
+   - RESIDUAL: 残差分析
+   - DFBETA: 参数变化诊断
+   - LEVERAGE: 杠杆值分析
+
+4. 输出选项：
+   - ALPHA=: 置信水平
+   - CL=: 置信区间类型
+   - RISKLIMITS: 风险比估计
+   - PLOTS=: 图形输出`,
+        example: `/* 示例1：基本区间删失回归 */
+proc icphreg data=interval;
+    class treatment (ref='0');
+    model (ltime, rtime) = treatment age gender;
+    hazardratio treatment;
+run;
+
+/* 示例2：带基线风险函数估计 */
+proc icphreg data=clinical;
+    class trt (ref='placebo');
+    model (start, stop) = trt age weight;
+    baseline out=base covariates=covs survival=surv;
+run;
+
+/* 示例3：完整分析示例 */
+proc icphreg data=study plots(overlay)=survival;
+    class treatment center;
+    model (left, right) = treatment age center / risklimits;
+    baseline out=surv_est covariates=newdata;
+    hazardratio 'Treatment Effect' treatment;
+    output out=out_data resmart=resid xbeta=lin_pred;
+run;`,
+        category: "生存分析",
+        references: `参考资料：
+1. SAS官方文档：https://documentation.sas.com/doc/en/statug/15.2/statug_icphreg_syntax.htm
+
+相关主题：
+1. 区间删失数据分析
+2. 比例风险模型
+3. 生存分析
+4. 临床试验数据分析`
     }
     // ... 继续添加其他函数
 ]; 
